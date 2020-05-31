@@ -9,10 +9,10 @@
         android:layout_height="wrap_content">
 
         <AutoCompleteTextView
-            android:id="@+id/input"
+            android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_todo_here"
+            android:hint="@string/search_todo_here"
             android:layout_margin="20dp"
             android:outlineSpotShadowColor="#000000"
             android:imeOptions="actionDone"/>

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">UCAssignment</string>
     <string name="todo_app">ToDo App</string>
+    <string name="enter_todo_here">Enter ToDo here</string>
+    <string name="del">DEL</string>
+    <string name="undo">Undo</string>
+    <string name="search_todo_here">Search ToDo here...</string>
 </resources>

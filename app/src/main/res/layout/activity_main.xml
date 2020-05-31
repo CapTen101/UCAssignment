@@ -4,20 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#FFDFC3">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/todo"
-        android:elevation="2dp" />
+        android:elevation="2dp"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/AppBarCardView"
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:elevation="5dp"
-        app:cardCornerRadius="30dp">
+        app:cardCornerRadius="30dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginLeft="1dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -25,15 +28,30 @@
             android:background="@drawable/todo">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
+                android:id="@+id/search_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/plus_fab"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="13dp"
+                android:backgroundTint="#fff"
+                android:elevation="2dp"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/search"
+                app:borderWidth="0dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/plus_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="13dp"
+                android:backgroundTint="#fff"
                 android:elevation="2dp"
                 android:focusableInTouchMode="true"
-                android:src="@drawable/plus" />
+                android:src="@drawable/plus"
+                app:borderWidth="0dp" />
 
         </RelativeLayout>
 

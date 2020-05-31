@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    FloatingActionButton fab;
+    FloatingActionButton plusFab, searchFab;
     RecyclerView todoitemsRecyclerView;
     RecyclerView.Adapter todoitemsRecyclerViewADAPTER;
     List<toDoItem> todoItemsList = new ArrayList<>(0);
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fab = findViewById(R.id.fab);
+        plusFab = findViewById(R.id.plus_fab);
+        searchFab = findViewById(R.id.search_fab);
         InitialMessage = findViewById(R.id.tap_to_add_text);
         todoitemsRecyclerView = findViewById(R.id.recycler_view);
         todoitemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -65,20 +67,68 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
 
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        plusFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Log.e(TAG, "Fab clicked");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Add a TODO Item");
+                builder.setTitle("Add a ToDo Item");
                 View viewInflated = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_box_layout, (ViewGroup) findViewById(android.R.id.content), false);
 
                 final EditText ToDoInput = viewInflated.findViewById(R.id.input);
                 builder.setView(viewInflated);
 
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Thread thread = new Thread() {
+                            @Override
+                            public void run() {
+                                AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "todoitemsdb").build();
+
+                                db.todoDao().insertall(new toDoItem(ToDoInput.getText().toString(),false));
+
+                                todoItemsList = db.todoDao().getalltodoitems();
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        InitialMessage.setVisibility(View.GONE);
+                                        todoitemsRecyclerView.setVisibility(View.VISIBLE);
+                                        todoitemsRecyclerViewADAPTER = new MyRecyclerViewAdapter(todoItemsList, getApplicationContext());
+                                        todoitemsRecyclerView.setAdapter(todoitemsRecyclerViewADAPTER);
+                                    }
+                                });
+                            }
+                        };
+                        thread.start();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+        searchFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Search your ToDO");
+                View viewInflated = LayoutInflater.from(MainActivity.this).inflate(R.layout.search_item_layout, (ViewGroup) findViewById(android.R.id.content), false);
+
+                final AutoCompleteTextView ToDoInput = viewInflated.findViewById(R.id.search);
+                builder.setView(viewInflated);
+
+                builder.setPositiveButton("GO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
                         dialog.dismiss();
