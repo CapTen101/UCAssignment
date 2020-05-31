@@ -5,4 +5,5 @@
 
 Link to the youtube video demonstration here: [On my Channel](https://www.youtube.com/watch?v=Qh9J926nxN8)
 > Do watch with a PC since somehow the video quality is bad on youtube Mobile :confused:
+Note: I've made a splash screen also but was added after uploading the video and hence aplash screne won't be seen in the video
 
