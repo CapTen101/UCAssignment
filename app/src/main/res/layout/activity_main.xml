@@ -4,23 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="#FFDFC3">
+    android:background="#FFDFC3"
+    tools:context=".MainActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/todo"
-        android:elevation="2dp"/>
+        android:elevation="2dp" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/AppBarCardView"
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        android:elevation="5dp"
-        app:cardCornerRadius="30dp"
+        android:layout_marginLeft="1dp"
         android:layout_marginRight="1dp"
-        android:layout_marginLeft="1dp">
+        android:elevation="5dp"
+        app:cardCornerRadius="30dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,9 +31,9 @@
                 android:id="@+id/search_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/plus_fab"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="13dp"
+                android:layout_toStartOf="@id/plus_fab"
                 android:backgroundTint="#fff"
                 android:elevation="2dp"
                 android:focusableInTouchMode="true"
@@ -61,7 +61,12 @@
         android:id="@+id/tap_to_add_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/AppBarCardView" />
+        android:layout_below="@id/AppBarCardView"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:background="#fff"
+        android:textColor="@android:color/black"
+        android:textSize="30sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
