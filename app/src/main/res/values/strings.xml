@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UCAssignment</string>
+    <string name="todo_app">ToDo App</string>
 </resources>
