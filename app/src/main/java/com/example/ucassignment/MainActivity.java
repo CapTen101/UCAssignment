@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -119,21 +120,26 @@ public class MainActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+
+
         searchFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Search your ToDO");
                 View viewInflated = LayoutInflater.from(MainActivity.this).inflate(R.layout.search_item_layout, (ViewGroup) findViewById(android.R.id.content), false);
 
                 final AutoCompleteTextView ToDoSearch = viewInflated.findViewById(R.id.search);
                 builder.setView(viewInflated);
 
+                final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "todoitemsdb").build();
+
                 Thread thread = new Thread() {
                     @Override
                     public void run() {
-                        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "todoitemsdb").build();
+
                         List<toDoItem> tempList = db.todoDao().getalltodoitems();
+
                         final List<String> searchText = new ArrayList<>();
                         for (toDoItem item : tempList) {
                             searchText.add(item.getToDoItem());
@@ -148,6 +154,48 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
+
+                final int[] KEY = new int[1];
+
+                ToDoSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        final String todoitemtext = ToDoSearch.getText().toString();
+
+                        Thread thread = new Thread() {
+                            @Override
+                            public void run() {
+                                KEY[0] = db.todoDao().getitemid(todoitemtext);
+                                Log.e(TAG, String.valueOf(KEY[0]));
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                    }
+                                });
+                            }
+                        };
+                        thread.start();
+
+                    }
+                });
+
+                builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        todoitemsRecyclerView.smoothScrollToPosition(KEY[0]);
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
                 thread.start();
                 builder.show();
             }
