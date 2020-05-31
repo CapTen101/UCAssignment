@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                             todoitemsRecyclerView.setVisibility(View.VISIBLE);
                             todoitemsRecyclerViewADAPTER = new MyRecyclerViewAdapter(todoItemsList, getApplicationContext());
                             todoitemsRecyclerView.setAdapter(todoitemsRecyclerViewADAPTER);
-                        } else InitialMessage.setText("Tap + to add a ToDo item...");
+                        } else InitialMessage.setText("Tap + to add a ToDo...");
                     }
                 });
             }
