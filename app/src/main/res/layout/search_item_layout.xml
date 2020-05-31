@@ -15,7 +15,8 @@
             android:hint="@string/search_todo_here"
             android:layout_margin="20dp"
             android:outlineSpotShadowColor="#000000"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            android:completionThreshold="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 </FrameLayout>

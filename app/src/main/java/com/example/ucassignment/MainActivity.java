@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "todoitemsdb").build();
 
-                                db.todoDao().insertall(new toDoItem(ToDoInput.getText().toString(),false));
+                                db.todoDao().insertall(new toDoItem(ToDoInput.getText().toString(), false));
 
                                 todoItemsList = db.todoDao().getalltodoitems();
 
@@ -125,44 +126,29 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle("Search your ToDO");
                 View viewInflated = LayoutInflater.from(MainActivity.this).inflate(R.layout.search_item_layout, (ViewGroup) findViewById(android.R.id.content), false);
 
-                final AutoCompleteTextView ToDoInput = viewInflated.findViewById(R.id.search);
+                final AutoCompleteTextView ToDoSearch = viewInflated.findViewById(R.id.search);
                 builder.setView(viewInflated);
 
-                builder.setPositiveButton("GO", new DialogInterface.OnClickListener() {
+                Thread thread = new Thread() {
                     @Override
-                    public void onClick(final DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Thread thread = new Thread() {
+                    public void run() {
+                        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "todoitemsdb").build();
+                        List<toDoItem> tempList = db.todoDao().getalltodoitems();
+                        final List<String> searchText = new ArrayList<>();
+                        for (toDoItem item : tempList) {
+                            searchText.add(item.getToDoItem());
+                        }
+
+                        runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "todoitemsdb").build();
-
-                                db.todoDao().insertall(new toDoItem(ToDoInput.getText().toString(),false));
-
-                                todoItemsList = db.todoDao().getalltodoitems();
-
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        InitialMessage.setVisibility(View.GONE);
-                                        todoitemsRecyclerView.setVisibility(View.VISIBLE);
-                                        todoitemsRecyclerViewADAPTER = new MyRecyclerViewAdapter(todoItemsList, getApplicationContext());
-                                        todoitemsRecyclerView.setAdapter(todoitemsRecyclerViewADAPTER);
-                                    }
-                                });
+                                ArrayAdapter adapterSearch = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, searchText);
+                                ToDoSearch.setAdapter(adapterSearch);
                             }
-                        };
-                        thread.start();
+                        });
                     }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
+                };
+                thread.start();
                 builder.show();
             }
         });
