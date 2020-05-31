@@ -1,6 +1,6 @@
 # UCAssignment
 
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/CapTen101/UCAssignment/)
 > ToDo application - Assignment under UrbanCompany
 
 Link to the youtube video demonstration here: [On my Channel](https://www.youtube.com/watch?v=Qh9J926nxN8)
